@@ -1,0 +1,18 @@
+2026-08-11 17:26:53.341: [INFO] CurrentProfilePath: C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default
+2026-08-11 17:26:53.341: [INFO] Profiles total count: 1
+2026-08-11 17:26:53.341: [INFO] Profile: name=Perfil 1 path=C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default lastActive=null
+2026-08-11 17:26:53.341: [INFO] LastUsedProfileDir: C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default
+2026-08-11 17:26:53.341: [INFO] OnDoneLoading sync enabled: 0
+2026-08-11 17:26:53.341: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-11 17:26:53.341: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-11 17:26:53.341: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-11 17:32:18.303: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-11 18:50:57.496: [INFO] CurrentProfilePath: C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default
+2026-08-11 18:50:57.496: [INFO] Profiles total count: 1
+2026-08-11 18:50:57.498: [INFO] Profile: name=Perfil 1 path=C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default lastActive=2026-08-11T17:32:00.462Z
+2026-08-11 18:50:57.498: [INFO] LastUsedProfileDir: C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default
+2026-08-11 18:50:57.498: [INFO] MostRecentlyActiveProfile: name=Perfil 1 path=C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default lastActive=2026-08-11T17:32:00.462Z
+2026-08-11 18:50:57.498: [INFO] OnDoneLoading sync enabled: 0
+2026-08-11 18:50:57.498: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-11 18:50:57.498: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-11 18:50:57.498: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1

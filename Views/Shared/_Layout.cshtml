@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark"> <!-- data-theme define o tema do DaisyUI (ex: dark, light, cupcacke, synthwave) -->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EasyGas</title>
+
+    <!-- 1. Tailwind CSS + DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 2. HTMX (Baixado direto via CDN para desenvolvimento rápido) -->
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    
+    <!-- Seu CSS customizado se precisar -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-base-200 text-base-content min-h-screen">
+
+<!-- Container Principal do App -->
+<main class="container mx-auto p-4">
+    @RenderBody()
+</main>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

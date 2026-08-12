@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="hero min-h-[70vh] bg-base-100 rounded-box shadow-xl border border-base-300">
+    <div class="hero-content text-center">
+        <div class="max-w-md">
+            <h1 class="text-4xl font-bold text-primary">EasyGas Desktop</h1>
+            <p class="py-6 text-base-content/70">
+                Interface alimentada por Tailwind CSS + DaisyUI com respostas instantâneas via HTMX!
+            </p>
+
+            <!-- Botão com estilo DaisyUI chamando o C# pelo HTMX -->
+            <button class="btn btn-primary"
+                    hx-get="/Home/TestarHtmx"
+                    hx-target="#resultado"
+                    hx-indicator="#loading">
+                Testar Requisição HTMX
+            </button>
+
+            <!-- Spinner de carregamento -->
+            <div id="loading" class="mt-4 htmx-indicator">
+                <span class="loading loading-spinner loading-md text-primary"></span>
+            </div>
+
+            <!-- Div onde o C# vai injetar o HTML retornado -->
+            <div id="resultado" class="mt-4"></div>
+        </div>
+    </div>
+</div>

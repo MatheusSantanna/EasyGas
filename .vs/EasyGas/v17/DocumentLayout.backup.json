@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|c:\\users\\mhsantana\\source\\repos\\easygas\\service\\ordemservicoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|solutionrelative:service\\ordemservicoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|c:\\users\\mhsantana\\source\\repos\\easygas\\models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|solutionrelative:models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|c:\\users\\mhsantana\\source\\repos\\easygas\\vm\\ordemservicovm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|solutionrelative:vm\\ordemservicovm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|c:\\users\\mhsantana\\source\\repos\\easygas\\models\\clientes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|solutionrelative:models\\clientes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|c:\\users\\mhsantana\\source\\repos\\easygas\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|c:\\users\\mhsantana\\source\\repos\\easygas\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|c:\\users\\mhsantana\\source\\repos\\easygas\\easygas.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|solutionrelative:easygas.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|c:\\users\\mhsantana\\source\\repos\\easygas\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{157132B4-1A12-43B6-A5A6-9C89F14CF48F}|EasyGas.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -35,53 +39,64 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\MainWindow.xaml",
-              "RelativeToolTip": "MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-08-11T17:25:50.117Z",
+              "Title": "OrdemServico.cs",
+              "DocumentMoniker": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Models\\OrdemServico.cs",
+              "RelativeDocumentMoniker": "Models\\OrdemServico.cs",
+              "ToolTip": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Models\\OrdemServico.cs",
+              "RelativeToolTip": "Models\\OrdemServico.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-14T12:04:58.013Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "EasyGas",
-              "DocumentMoniker": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\EasyGas.csproj",
-              "RelativeDocumentMoniker": "EasyGas.csproj",
-              "ToolTip": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\EasyGas.csproj",
-              "RelativeToolTip": "EasyGas.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-08-11T17:22:50.207Z",
+              "Title": "OrdemServicoVM.cs",
+              "DocumentMoniker": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\VM\\OrdemServicoVM.cs",
+              "RelativeDocumentMoniker": "VM\\OrdemServicoVM.cs",
+              "ToolTip": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\VM\\OrdemServicoVM.cs",
+              "RelativeToolTip": "VM\\OrdemServicoVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-14T12:04:45.965Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OrdemServicoService.cs",
+              "DocumentMoniker": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Service\\OrdemServicoService.cs",
+              "RelativeDocumentMoniker": "Service\\OrdemServicoService.cs",
+              "ToolTip": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Service\\OrdemServicoService.cs",
+              "RelativeToolTip": "Service\\OrdemServicoService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAACUAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-14T11:57:32.831Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-11T15:00:09.785Z",
-              "EditorCaption": ""
+              "Title": "Clientes.cs",
+              "DocumentMoniker": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Models\\Clientes.cs",
+              "RelativeDocumentMoniker": "Models\\Clientes.cs",
+              "ToolTip": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Models\\Clientes.cs",
+              "RelativeToolTip": "Models\\Clientes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-11T17:40:09.409Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\mhsantana\\source\\repos\\EasyGas\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwCwAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-11T14:24:19.404Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-11T14:24:19.404Z"
             }
           ]
         }

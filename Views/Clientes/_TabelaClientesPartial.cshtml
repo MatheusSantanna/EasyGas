@@ -1,0 +1,38 @@
+@model IEnumerable<EasyGas.Models.Clientes>
+
+<table class="table table-zebra w-full">
+    <thead>
+    <tr>
+        <th>Razão Social</th>
+        <th>CNPJ</th>
+        <th>Ativo</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var cliente in Model)
+    {
+        <tr class="hover cursor-pointer"
+            hx-get="@Url.Action("AbrirCadastroCliente", "Clientes", new { id = cliente.Id })"
+            hx-target="#cliente-wizard-container"
+            hx-swap="innerHTML">
+            <td>@cliente.RazaoSocial</td>
+            <td>@cliente.Cnpj</td>
+            @if(@cliente.Ativo == true) 
+            {
+                <td>Sim</td>
+            }
+            else
+            {
+                <td>Não</td>
+            }
+            
+        </tr>
+    }
+    @if (!Model.Any())
+    {
+        <tr>
+            <td colspan="2" class="text-center py-4">Nenhum cliente encontrado.</td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EasyGas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84970826563e6fa3bc01064647f0fd1a7493d057")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+49ff31e9a6b6dbd7980cb3d28ccee0cf8b7489e6")]
 [assembly: System.Reflection.AssemblyProductAttribute("EasyGas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EasyGas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

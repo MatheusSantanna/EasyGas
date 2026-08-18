@@ -2,29 +2,120 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="hero min-h-[70vh] bg-base-100 rounded-box shadow-xl border border-base-300">
-    <div class="hero-content text-center">
-        <div class="max-w-md">
-            <h1 class="text-4xl font-bold text-primary">EasyGas Desktop</h1>
-            <p class="py-6 text-base-content/70">
-                Interface alimentada por Tailwind CSS + DaisyUI com respostas instantâneas via HTMX!
-            </p>
+<div class="space-y-6">
+    <!-- Cabeçalho de Boas-Vindas -->
+    <div class="bg-base-100 p-6 rounded-box shadow-lg border border-base-300">
+        <h1 class="text-3xl font-bold text-primary">EasyGas Desktop</h1>
+        <p class="text-sm text-base-content/70 mt-1">
+            Selecione uma das etapas do fluxo para gerenciar as rotinas do sistema.
+        </p>
+    </div>
 
-            <!-- Botão com estilo DaisyUI chamando o C# pelo HTMX -->
-            <button class="btn btn-primary"
-                    hx-get="/Home/TestarHtmx"
-                    hx-target="#resultado"
-                    hx-indicator="#loading">
-                Testar Requisição HTMX
-            </button>
+    <!-- Grid dos 4 Blocos do Wizard -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <!-- Spinner de carregamento -->
-            <div id="loading" class="mt-4 htmx-indicator">
-                <span class="loading loading-spinner loading-md text-primary"></span>
+        <!-- Bloco 1: Clientes -->
+        <div class="card bg-base-100 shadow-xl border border-base-300 hover:border-primary/50 transition-all duration-300">
+            <div class="card-body p-6">
+                <div class="flex items-center justify-between">
+                    <div class="p-3 bg-primary/10 text-primary rounded-xl">
+                        <!-- Ícone Clientes -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="card-title mt-4 text-base-content">Clientes</h2>
+                <p class="text-xs text-base-content/70">
+                    Gerencie o cadastro, endereços e contatos dos clientes.
+                </p>
+                <div class="card-actions justify-end mt-4">
+                    <button class="btn btn-primary btn-sm w-full">
+                    <a href="@Url.Action("ListaClientes", "Clientes")" class="btn btn-primary btn-sm w-full">
+                        Acessar Clientes
+                    </a>
+                    </button>
+                </div>
             </div>
-
-            <!-- Div onde o C# vai injetar o HTML retornado -->
-            <div id="resultado" class="mt-4"></div>
         </div>
+
+        <!-- Bloco 2: Colaboradores -->
+        <div class="card bg-base-100 shadow-xl border border-base-300 hover:border-primary transition-all duration-300">
+            <div class="card-body p-6">
+                <div class="flex items-center justify-between">
+                    <div class="p-3 bg-primary/10 text-primary rounded-xl">
+                        <!-- Ícone Colaboradores -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="card-title mt-4 text-base-content">Colaboradores</h2>
+                <p class="text-xs text-base-content/70">
+                    Controle técnicos, atendentes e cargos da equipe.
+                </p>
+                <div class="card-actions justify-end mt-4">
+                    <button class="btn btn-primary btn-sm w-full"
+                            hx-get="@Url.Action("Index", "Colaboradores")"
+                            hx-target="#main-content"
+                            hx-swap="innerHTML">
+                        Acessar Colaboradores
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloco 3: Ordens de Serviço -->
+        <div class="card bg-base-100 shadow-xl border border-base-300 hover:border-primary transition-all duration-300">
+            <div class="card-body p-6">
+                <div class="flex items-center justify-between">
+                    <div class="p-3 bg-primary/10 text-primary rounded-xl">
+                        <!-- Ícone Ordens de Serviço -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="card-title mt-4 text-base-content">Ordens de Serviço</h2>
+                <p class="text-xs text-base-content/70">
+                    Acompanhe aberturas, execuções e finalizações de O.S.
+                </p>
+                <div class="card-actions justify-end mt-4">
+                    <button class="btn btn-primary btn-sm w-full"
+                            hx-get="@Url.Action("Index", "OrdensServico")"
+                            hx-target="#main-content"
+                            hx-swap="innerHTML">
+                        Acessar O.S.
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloco 4: Faturamento -->
+        <div class="card bg-base-100 shadow-xl border border-base-300 hover:border-neutral/50 transition-all duration-300">
+            <div class="card-body p-6">
+                <div class="flex items-center justify-between">
+                    <div class="p-3 bg-primary/10 text-primary rounded-xl">
+                        <!-- Ícone Faturamento -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="card-title mt-4 text-base-content">Faturamento</h2>
+                <p class="text-xs text-base-content/70">
+                    Gere cobranças, faturas e relatórios financeiros.
+                </p>
+                <div class="card-actions justify-end mt-4">
+                    <button class="btn btn-primary btn-sm w-full"
+                            hx-get="@Url.Action("Index", "Faturamento")"
+                            hx-target="#main-content"
+                            hx-swap="innerHTML">
+                        Acessar Faturamento
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

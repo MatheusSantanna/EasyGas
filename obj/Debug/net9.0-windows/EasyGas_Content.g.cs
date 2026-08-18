@@ -72,6 +72,8 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("wwwroot/lib/jquery/license.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("appsettings.development.json")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("appsettings.json")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("views/clientes/listaclientes.cshtml")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("views/clientes/_tabelaclientespartial.cshtml")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("views/home/index.cshtml")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("views/home/privacy.cshtml")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("views/shared/error.cshtml")]

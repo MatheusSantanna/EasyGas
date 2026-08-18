@@ -84,5 +84,6 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("webview2loader.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("webview2loader.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("webview2loader.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("views/shared/_layout.cshtml.css")]
 
 

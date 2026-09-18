@@ -16,15 +16,27 @@ public class ClientesService : IClientesService
 
     public async Task<Clientes> PostClientes(Clientes cliente)
     {
-        var novoCLiente = new Clientes
+        if (cliente.Id > 0)
         {
-            Id = cliente.Id,
+            var existente = await _clientesRepository.GetByIdAsync(cliente.Id);
+            if (existente is null)
+                throw new InvalidOperationException("Cliente não encontrado.");
+
+            existente.RazaoSocial = cliente.RazaoSocial;
+            existente.Cnpj = cliente.Cnpj;
+            existente.Ativo = cliente.Ativo;
+            _clientesRepository.Update(existente);
+            return existente;
+        }
+
+        var novoCliente = new Clientes
+        {
             RazaoSocial = cliente.RazaoSocial,
             Cnpj = cliente.Cnpj,
-            Ativo = true
+            Ativo = cliente.Ativo
         };
-        await _clientesRepository.AddAsync(novoCLiente);
-        return novoCLiente;
+        await _clientesRepository.AddAsync(novoCliente);
+        return novoCliente;
     }
     
     public async Task<List<Clientes>> GetAllClientes(string? termoBusca = null)

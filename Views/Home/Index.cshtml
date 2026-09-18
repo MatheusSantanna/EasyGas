@@ -55,11 +55,10 @@
                     Controle técnicos, atendentes e cargos da equipe.
                 </p>
                 <div class="card-actions justify-end mt-4">
-                    <button class="btn btn-primary btn-sm w-full"
-                            hx-get="@Url.Action("Index", "Colaboradores")"
-                            hx-target="#main-content"
-                            hx-swap="innerHTML">
-                        Acessar Colaboradores
+                    <button class="btn btn-primary btn-sm w-full">
+                        <a href="@Url.Action("GetColaboradores", "Colaboradores")" class="btn btn-primary btn-sm w-full">
+                            Acessar Colaboradores
+                        </a>
                     </button>
                 </div>
             </div>

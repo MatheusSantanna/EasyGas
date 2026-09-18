@@ -1,0 +1,42 @@
+﻿@model IEnumerable<EasyGas.Models.Colaboradores>
+
+<table class="table table-zebra w-full">
+    <thead>
+        <tr>
+            <th>Nome Colaborador</th>
+            <th>Cargo</th>
+            <th>Data Nascimento</th>
+            <th>Idade</th>
+            <th>Ativo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var colaboradores in Model)
+        {
+            <tr class="hover cursor-pointer"
+                
+                onclick="window.location='@Url.Action("PostColaboradores", "Colaboradores", new { id = colaboradores.Id })'">
+                <td>@colaboradores.Nome</td>
+                <td>@colaboradores.Cargo</td>
+                <td>@colaboradores.Idade.ToString("dd/MM/yyyy")</td>
+                <td>@colaboradores.IdadeCalculada</td>
+                @if (@colaboradores.Ativo == true)
+                {
+                    
+                    <td>Sim</td>
+                }
+                else
+                {
+                    <td>Não</td>
+                }
+
+            </tr>
+        }
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="2" class="text-center py-4">Nenhum cliente encontrado.</td>
+            </tr>
+        }
+    </tbody>
+</table>

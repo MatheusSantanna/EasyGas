@@ -1,0 +1,77 @@
+﻿@model IEnumerable<EasyGas.Models.Colaboradores>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="min-h-screen bg-[#f3f3f3]">
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="p-6">
+
+        <div class="max-w-[1100px] mx-auto">
+
+            <!-- TÍTULO -->
+            <div class="mb-5">
+                <h1 class="text-[20px] font-bold text-[#222]">
+                    Colaboradores
+                </h1>
+
+                <p class="text-[12px] text-[#777]">
+                    Todos os clientes cadastrados no sistema.
+                </p>
+            </div>
+
+           
+            <div class="flex gap-2 mb-4">
+
+                <input type="text"
+                       name="termoBusca"
+                       placeholder="Buscar por cliente..."
+                       class="w-full h-[38px] px-3 bg-white border border-[#d5d5d5] rounded-md text-[12px] text-[#555] outline-none focus:border-[#168bd0]"
+                       hx-get="@Url.Action("GetColaboradores", "Colaboradores")"
+                       hx-trigger="keyup changed delay:400ms, search"
+                       hx-target="#tabela-clientes-container"
+                       hx-indicator="#loading-busca" />
+
+                <button type="button"
+                        class="h-[38px] px-4 bg-white border border-[#d5d5d5] rounded-md text-[12px] text-[#555] hover:bg-[#f7f7f7]"
+                        hx-get="@Url.Action("GetColaboradores", "Colaboradores")"
+                        hx-include="[name='termoBusca']"
+                        hx-target="#tabela-clientes-container"
+                        hx-indicator="#loading-busca">
+                    Buscar
+                </button>
+
+                <a asp-controller="Colaboradores"
+                   asp-action="PostColaboradores"
+                   class="h-[38px] px-4 inline-flex items-center whitespace-nowrap bg-[#168bd0] border border-[#168bd0] rounded-md text-[12px] text-white hover:bg-[#137bb8]">
+                    Novo Colaborador
+                </a>
+
+            </div>
+
+            <!-- LOADING -->
+            <div id="loading-busca"
+                 class="htmx-indicator flex justify-center py-2">
+
+                <span class="loading loading-dots loading-sm"></span>
+
+            </div>
+
+            <!-- TABELA -->
+            <div id="tabela-clientes-container"
+                 class="bg-white border border-[#dedede] rounded-md overflow-hidden">
+
+                @await Html.PartialAsync("_TabelaColabPartial", Model)
+
+            </div>
+
+            <!-- WIZARD -->
+            <div id="cliente-wizard-container"></div>
+
+        </div>
+
+    </main>
+
+</div>

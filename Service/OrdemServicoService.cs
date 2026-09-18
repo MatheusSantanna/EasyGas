@@ -25,6 +25,7 @@ public class OrdemServicoService : IOrdemServicoService
             ClienteId = vm.ClienteId,
             ColaboradorId = vm.ColaboradorId,
             NumeroOs = vm.NumeroOS,
+            TipoServico = vm.TipoServico, //no front usar o display name Ex: [Display(Name = "Manutenção Preventiva")] Manutencao = 0, 
             DataAbertura = vm.DataInicio,
             DataFechamento = vm.DataFim,
             ValorTotal = vm.ValorOs,

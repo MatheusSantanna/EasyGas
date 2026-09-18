@@ -17,7 +17,7 @@ namespace EasyGas.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.19")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -54,12 +54,15 @@ namespace EasyGas.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Cargo")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Idade")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -79,7 +82,7 @@ namespace EasyGas.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataFaturamento")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<bool>("StatusPagamento")
                         .HasColumnType("boolean");
@@ -113,10 +116,10 @@ namespace EasyGas.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DataAbertura")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<DateTime?>("DataFechamento")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<int?>("FaturamentoId")
                         .HasColumnType("integer");
@@ -126,6 +129,9 @@ namespace EasyGas.Migrations
 
                     b.Property<bool>("OsFinalizada")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("TipoServico")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("ValorTotal")
                         .HasColumnType("numeric");

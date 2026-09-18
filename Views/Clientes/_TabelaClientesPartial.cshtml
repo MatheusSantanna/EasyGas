@@ -12,9 +12,7 @@
     @foreach (var cliente in Model)
     {
         <tr class="hover cursor-pointer"
-            hx-get="@Url.Action("AbrirCadastroCliente", "Clientes", new { id = cliente.Id })"
-            hx-target="#cliente-wizard-container"
-            hx-swap="innerHTML">
+            onclick="window.location='@Url.Action("PostClientes", "Clientes", new { id = cliente.Id })'">
             <td>@cliente.RazaoSocial</td>
             <td>@cliente.Cnpj</td>
             @if(@cliente.Ativo == true) 

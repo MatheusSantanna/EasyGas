@@ -7,7 +7,7 @@ public interface IColaboradoresService
     Task<Colaboradores> PostColaborador(Colaboradores colaborador);
     Task<List<Colaboradores>> GetAllColaboradores();
     Task<Colaboradores> GetColaboradoresById(int id);
-    void UpdateColaborador(Colaboradores colaborador);
+    Task  UpdateColaborador(bool status, Colaboradores colaborador);
 
     Task DropColaborador(int id);
 }

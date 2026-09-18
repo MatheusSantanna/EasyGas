@@ -430,3 +430,13 @@
 2026-08-18 19:39:30.120: [INFO] BookmarkModelLoaded, ids_reassigned: 0
 2026-08-18 19:39:30.120: [INFO] BookmarksLoadDropped droppedNodes=0
 2026-08-18 19:39:30.120: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-24 16:37:18.262: [INFO] CurrentProfilePath: C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default
+2026-08-24 16:37:18.262: [INFO] Profiles total count: 1
+2026-08-24 16:37:18.263: [INFO] Profile: name=Perfil 1 path=C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default lastActive=2026-08-18T19:45:54.690Z
+2026-08-24 16:37:18.263: [INFO] LastUsedProfileDir: C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default
+2026-08-24 16:37:18.263: [INFO] MostRecentlyActiveProfile: name=Perfil 1 path=C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\EasyGas.exe.WebView2\EBWebView\Default lastActive=2026-08-18T19:45:54.690Z
+2026-08-24 16:37:18.263: [INFO] OnDoneLoading sync enabled: 0
+2026-08-24 16:37:18.263: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-24 16:37:18.263: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-24 16:37:18.263: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-24 16:37:30.484: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1

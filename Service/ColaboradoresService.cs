@@ -18,6 +18,23 @@ public class ColaboradoresService : IColaboradoresService
     
     public async Task<Colaboradores> PostColaborador(Colaboradores colaborador)
     {
+
+        if (colaborador.Id > 0)
+        {
+            var existente = await _colaboradores.GetByIdAsync(colaborador.Id);
+            if (existente is null)
+                throw new InvalidOperationException("Colaborador não encontrado.");
+            
+            existente.Nome = colaborador.Nome;
+            existente.Cargo = colaborador.Cargo;
+            existente.Idade = colaborador.Idade.Date;
+            existente.Ativo = colaborador.Ativo;
+            _colaboradores.Update(existente);
+            return existente;
+        }
+        
+        colaborador.Idade = colaborador.Idade.Date;
+
         await _colaboradores.AddAsync(colaborador);
 
         return colaborador;
@@ -33,12 +50,23 @@ public class ColaboradoresService : IColaboradoresService
         return await _colaboradores.GetByIdAsync(colaboradorId);
     }
     [HttpPut]
-    public void UpdateColaborador(Colaboradores colaborador)
+    public async Task  UpdateColaborador(bool status, Colaboradores colaborador)
     {
-        //esse metodo depois tera que ser criado uma
-        //view model aonde iremos poder atualizar somente o cargo o colaborador,
-        //fazendo assim uma instancia da VM e retornando um colaborador para o metodo update. 
-         _colaboradores.Update(colaborador);
+       
+        var colabAtualizado = await _colaboradores.GetByIdAsync(colaborador.Id);
+        if (status == true &&  colabAtualizado != null)
+        {
+            colabAtualizado.Ativo = true;
+            _colaboradores.Update(colabAtualizado);
+        }
+        else
+        {
+            if (colabAtualizado != null)
+            {
+                colabAtualizado.Ativo = false;
+                _colaboradores.Update(colabAtualizado);
+            }
+        }
     }
 
 
@@ -50,6 +78,5 @@ public class ColaboradoresService : IColaboradoresService
             await  _colaboradores.DeleteAsync(colaborador.Id);
         }
     }
-    
     
 }

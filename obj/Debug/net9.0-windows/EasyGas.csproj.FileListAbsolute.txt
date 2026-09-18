@@ -77,7 +77,6 @@ C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\System.Composit
 C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
 C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
 C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
-C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\System.Text.Json.dll
 C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
 C:\Users\mhsantana\source\repos\EasyGas\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll

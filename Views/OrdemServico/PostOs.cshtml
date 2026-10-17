@@ -1,0 +1,127 @@
+@using EasyGas.Models  
+@model EasyGas.VM.OrdemServicoVM
+
+@{
+    ViewData["Title"] = Model.Id > 0 ? "Editar Os" : "Nova Os";
+    var isEdicao = Model.Id > 0;
+}
+
+<div class="min-h-screen bg-[#f3f3f3]">
+
+    <main class="p-6">
+
+        <div class="max-w-[1100px] mx-auto">
+
+            <div class="mb-5">
+                <h1 class="text-[20px] font-bold text-[#222]">
+                    @(isEdicao ? "Editar Os" : "Nova Ordem de serviço")
+                </h1>
+
+                <p class="text-[12px] text-[#777]">
+                    @(isEdicao
+                        ? "Edite a OS."
+                        : "Preenchimento OS.")
+                </p>
+            </div>
+
+            <div class="bg-white border border-[#dedede] rounded-md overflow-hidden">
+
+                <form asp-controller="OrdemServico"
+                      asp-action="PostOs"
+                      method="post"
+                      class="p-6">
+
+                    <input type="hidden" asp-for="Id" />
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="mb-4 text-[12px] text-red-600">
+                            <div asp-validation-summary="All"></div>
+                        </div>
+                    }
+
+                    <!-- Div pai para manter os selects lado a lado -->
+                    <div class="flex flex-col sm:flex-row gap-4 w-full">
+                        
+                        <div class="form-control flex-1">  
+                            <label class="label font-medium text-sm text-gray-700">
+                                Cliente:
+                            </label>
+                            <select class="select select-bordered w-full" asp-for="ClienteId" asp-items="Model.Clientes">
+                                <option value="" disabled selected>Selecione o cliente</option>
+                            </select>
+                            <span asp-validation-for="ClienteId" class="text-xs text-red-500 mt-1"></span>
+                        </div>
+
+                        <div class="form-control flex-1">  
+                            <label class="label font-medium text-sm text-gray-700">
+                                Tecnico:
+                            </label>
+                            <select class="select select-bordered w-full" asp-for="ColaboradorId" asp-items="Model.Colab">
+                                <option value="" disabled selected>Selecione o colaborador</option>
+                            </select>
+                            <span asp-validation-for="ColaboradorId" class="text-xs text-red-500 mt-1"></span>
+                        </div>
+                    </div><br/>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 w-full">
+                        <div class="form-control flex-1">
+                            <label class="label font-medium text-sm text-gray-700">
+                                Numero Os
+                            </label>
+                            <input type="text" class="input input-md w-full" asp-for="NumeroOS" placeholder="Nome do colaborador"/>
+                        </div>
+                        
+                        <div class="form-control flex-1">
+                            <label class="label font-medium text-sm text-gray-700">
+                                Tipo Serviço: 
+                            </label>
+                            <select class="select select-bordered w-full"
+                                    asp-for="TipoServico"
+                                    asp-items="Html.GetEnumSelectList<TipoServico>()">
+                                <option value="" disabled selected>Selecione o tipo de serviço</option>
+                            </select>
+                        </div>
+                    </div> 
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 w-full">
+                        
+                        <div class="form-control flex-1">
+                            <label class="label font-medium text-sm text-gray-700">
+                                Data Abertura:
+                            </label>
+                            <input type="date" class="input input-md w-full" asp-for="DataInicio" />
+                        </div>
+                        
+                        <div class="form-control flex-1">
+                            <label class="label font-medium text-sm text-gray-700">
+                                Valor do Serviço:
+                            </label>
+                            <input type="number" class="input input-md w-full" placeholder="R$:" asp-for="ValorOs"/>
+                        </div>
+
+                    </div>
+
+                    <!-- Div dos botões perfeitamente alinhados à direita com espaço entre eles -->
+                    <div class="flex items-center justify-end gap-2 mt-6">
+                        <a asp-controller="OrdemServico"
+                           asp-action="GetOs"
+                           class="h-[38px] px-4 inline-flex items-center bg-white border border-[#d5d5d5] rounded-md text-[12px] text-[#555] hover:bg-[#f7f7f7]">
+                            Cancelar
+                        </a>
+
+                        <button type="submit"
+                                class="h-[38px] px-4 bg-[#168bd0] border border-[#168bd0] rounded-md text-[12px] text-white hover:bg-[#137bb8]">
+                            @(isEdicao ? "Salvar alterações" : "Cadastrar")
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>

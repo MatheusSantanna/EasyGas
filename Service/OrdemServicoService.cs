@@ -19,14 +19,16 @@ public class OrdemServicoService : IOrdemServicoService
     
     public async Task<OrdemServico> PostOrdemServico(OrdemServicoVM vm)
     {
+        
+        var agora = DateTime.Now;
+        
         var ordem = new OrdemServico
         {
-            Id = vm.Id,
-            ClienteId = vm.ClienteId,
-            ColaboradorId = vm.ColaboradorId,
+            ClientesId = vm.ClienteId,
+            ColaboradoresId = vm.ColaboradorId,
             NumeroOs = vm.NumeroOS,
-            TipoServico = vm.TipoServico, //no front usar o display name Ex: [Display(Name = "Manutenção Preventiva")] Manutencao = 0, 
-            DataAbertura = vm.DataInicio,
+            TipoServico = vm.TipoServico,  
+            DataAbertura = DateTime.SpecifyKind(vm.DataInicio.Date + agora.TimeOfDay, DateTimeKind.Local).ToUniversalTime(),
             DataFechamento = vm.DataFim,
             ValorTotal = vm.ValorOs,
             OsFinalizada = false
@@ -37,19 +39,21 @@ public class OrdemServicoService : IOrdemServicoService
         return ordem;
     }
 
-    public async Task<List<OrdemServicoVM>> GetAllOrdensServico(bool finalizada)
+    public async Task<List<OrdemServicoVM>> GetAllOrdensServico(bool? finalizada)
     {
-        return await _ordemServicoRepository
+        var query = await _ordemServicoRepository
             .GetAllAsync()
-            .Where(x => finalizada 
-                    ? x.DataFechamento != null 
-                    : x.DataFechamento == null)
+            .Where(x => finalizada == null ||
+                        (finalizada.Value
+                            ? x.DataFechamento != null 
+                            : x.DataFechamento == null))
+            .OrderByDescending(
+                x => x.DataAbertura)
             .Select(x => new OrdemServicoVM
             {
-                Id = x.Id,
                 NumeroOS = x.NumeroOs,
-                ClienteId = x.ClienteId,
-                ColaboradorId = x.ColaboradorId,
+                ClienteId = x.ClientesId,
+                ColaboradorId = x.ColaboradoresId,
                 NomeCliente = x.Clientes.RazaoSocial,
                 NomeExecutor = x.Colaboradores.Nome,
                 ValorOs = x.ValorTotal,
@@ -57,8 +61,10 @@ public class OrdemServicoService : IOrdemServicoService
                 DataFim = x.DataFechamento,
                 OsFinalizada = x.DataFechamento != null
             }).ToListAsync();
+        
+        return query;
     }
-
+    
     public Task<List<OrdemServicoVM>> GetOrdensAbertas() => GetAllOrdensServico(finalizada: false);
     public Task<List<OrdemServicoVM>> GetOrdensFechadas() => GetAllOrdensServico(finalizada: true);
     

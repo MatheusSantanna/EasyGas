@@ -1,0 +1,9 @@
+# 1. Qualquer alteração em qualquer lugar precisa do seu aceite:
+* @MatheusSantanna
+
+# 2. Apenas arquivos JavaScript e C# precisam da sua aprovação:
+*.js @MatheusSantanna
+*.cs @MatheusSantanna
+
+# 3. Alterações em uma pasta específica (ex: backend) exigem sua aprovação:
+/src/backend/ @MatheusSantanna

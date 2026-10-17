@@ -79,12 +79,10 @@
                 <p class="text-xs text-base-content/70">
                     Acompanhe aberturas, execuções e finalizações de O.S.
                 </p>
-                <div class="card-actions justify-end mt-4">
-                    <button class="btn btn-primary btn-sm w-full"
-                            hx-get="@Url.Action("Index", "OrdensServico")"
-                            hx-target="#main-content"
-                            hx-swap="innerHTML">
-                        Acessar O.S.
+                <div class="card-actions justify-end mt-4"> <button class="btn btn-primary btn-sm w-full">
+                        <a href="@Url.Action("GetOs", "OrdemServico")" class="btn btn-primary btn-sm w-full">
+                            Acessar Ordem de Serviço
+                        </a>
                     </button>
                 </div>
             </div>

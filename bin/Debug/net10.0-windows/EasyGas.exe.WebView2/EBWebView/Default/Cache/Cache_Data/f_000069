@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Internal Server Error</title>
+    <style>
+        :root {
+    --color-text: #222;
+    --color-background: #fff;
+    --color-border: #ddd;
+    --color-link: #105e85;
+    --color-link-hover: #157eb0;
+
+    --color-heading-main: #44525e;
+    --color-heading-stacktrace: #363636;
+    --color-table-heading: #44525e;
+
+    --color-tab-link: #105e85;
+    --color-tab-selected: #fff;
+    --color-tab-selected-background: #105e85;
+
+    --color-code-background: #fbfbfb;
+    --color-code-highlight: #c70000;
+    --color-code-context-linenum: #606060;
+    --color-code-context: #606060;
+    --color-code-context-button-background: #ddd;
+}
+
+/* Intentional double at-signs here to escape properly when included in cshtml */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-text: #dcdcdc;
+        --color-background: #222;
+        --color-border: #444;
+        --color-link: #4db7ea;
+        --color-link-hover: #88cfea;
+
+        --color-heading-main: #a9bac7;
+        --color-heading-stacktrace: #c7c7c7;
+        --color-table-heading: #a9bac7;
+
+        --color-tab-link: #4db7ea;
+        --color-tab-selected: #222;
+        --color-tab-selected-background: #4db7ea;
+
+        --color-code-background: #1c1c1c;
+        --color-code-highlight: #ff8787;
+        --color-code-context-linenum: #9B9B9B;
+        --color-code-context: #9B9B9B;
+        --color-code-context-button-background: #444;
+    }
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Arial, Helvetica, sans-serif;
+    font-size: .813em;
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+
+h1 {
+    color: var(--color-heading-main);
+    margin: 15px 0 15px 0;
+}
+
+h2 {
+    margin: 10px 5px 0 0;
+    padding: 5px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+h3 {
+    color: var(--color-heading-stacktrace);
+    margin: 5px 5px 0 0;
+    font-weight: normal;
+}
+
+code {
+    font-family: Consolas, "Courier New", courier, monospace;
+    font-weight: bold;
+}
+
+a {
+    color: var(--color-link);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+}
+
+/* Exception title & message */
+body .titleerror {
+    padding: 3px 3px 6px 3px;
+    display: block;
+    font-size: 1.5em;
+    font-weight: 100;
+}
+
+/* Exception location */
+body .location {
+    margin: 3px 0 10px 30px;
+    font-size: 1.1em;
+}
+
+/* Tab navigation */
+#header {
+    font-size: 18px;
+    padding: 15px 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 0;
+}
+#header li {
+    display: inline;
+    margin: 5px;
+    padding: 5px;
+    color: var(--color-tab-link);
+    cursor: pointer;
+}
+#header .selected {
+    color: var(--color-tab-selected);
+    background: var(--color-tab-selected-background);
+}
+
+/* Stack page */
+#stackpage .details {
+    font-size: 1.2em;
+    padding: 3px;
+}
+#stackpage ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#stackpage .frame {
+    padding: 0;
+    margin: 0 0 0 30px;
+    word-break: break-word;
+}
+#stackpage .frame h3 {
+    padding: 2px;
+    margin: 0;
+}
+
+/* Stack frame source */
+#stackpage .source {
+    padding: 0 0 0 30px;
+}
+#stackpage .source ol li {
+    font-family: Consolas, "Courier New", courier, monospace;
+    white-space: pre-wrap;
+    background-color: var(--color-code-background);
+}
+
+/* Stack frame source: highlighted line */
+#stackpage .source .highlight {
+    border-left: 3px solid var(--color-code-highlight);
+    margin-left: -3px;
+    font-weight: bold;
+}
+#stackpage .source .highlight li span {
+    color: var(--color-code-highlight);
+}
+
+/* Stack frame source: context lines */
+#stackpage .source .collapsible {
+    color: var(--color-code-context-linenum);
+}
+#stackpage .source .collapsible li span {
+    color: var(--color-code-context);
+}
+
+.expandCollapseButton {
+    position: absolute;
+    left: 10px;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    color: inherit;
+    background: var(--color-code-context-button-background);
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+}
+
+/* Table */
+.page table {
+    border-collapse: collapse;
+    margin: 0 0 20px;
+    font-size: 1.1em;
+}
+.page th {
+    padding: 10px 10px 5px 10px;
+    color: var(--color-table-heading);
+    text-align: left;
+}
+.page td {
+    padding: 3px 10px;
+}
+.page tr {
+    border-bottom: 1px solid var(--color-border);
+}
+.page tr > :not(:last-child) {
+    border-right: 1px solid var(--color-border);
+}
+.page tr > :first-child {
+    min-width: 150px;
+}
+.page tr > :last-child {
+    word-break: break-word;
+}
+
+.page p {
+    font-size: 1.1em;
+}
+
+/* Raw exception details */
+.rawExceptionBlock {
+    font-size: 1.2em;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+.showRawException {
+    display: inline-block;
+    color: var(--color-link);
+    background: transparent;
+    font: inherit;
+    border: 0;
+    padding: 10px 0;
+    cursor: pointer;
+}
+.showRawException:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+}
+
+    </style>
+</head>
+<body>
+    <h1>An unhandled exception occurred while processing the request.</h1>
+        <div class="titleerror">
+            ArgumentException: Cannot write DateTime with Kind=Unspecified to PostgreSQL type &#x27;timestamp with time zone&#x27;, only UTC is supported. Note that it&#x27;s not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter &#x27;value&#x27;)        </div>
+            <p class="location">Npgsql.Internal.Converters.DateTimeConverterResolver&lt;T&gt;.Get(DateTime value, Nullable&lt;PgTypeId&gt; expectedPgTypeId, bool validateOnly)</p>
+        <div class="titleerror">
+            DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.        </div>
+            <p class="location">Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)</p>
+        <div class="titleerror">
+            Exception: Cannot write DateTime with Kind=Unspecified to PostgreSQL type &#x27;timestamp with time zone&#x27;, only UTC is supported. Note that it&#x27;s not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter &#x27;value&#x27;)        </div>
+            <p class="location">EasyGas.Repositorio.Repository&lt;T&gt;.AddAsync(T entity) in <code title="C:\Users\mhsantana\Workspace\Projects\EasyGas\Repositorio\Repository.cs">Repository.cs</code>, line 29</p>
+    <ul id="header">
+        <li id="stack" tabindex="1" class="selected">
+            Stack
+        </li>
+        <li id="query" tabindex="2">
+            Query
+        </li>
+        <li id="cookies" tabindex="3">
+            Cookies
+        </li>
+        <li id="headers" tabindex="4">
+            Headers
+        </li>
+        <li id="routing" tabindex="5">
+            Routing
+        </li>
+    </ul>
+
+    <div id="stackpage" class="page">
+        <ul>
+                <li>
+                    <h2>ArgumentException: Cannot write DateTime with Kind=Unspecified to PostgreSQL type &#x27;timestamp with time zone&#x27;, only UTC is supported. Note that it&#x27;s not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter &#x27;value&#x27;)</h2>
+                    <ul>
+                            <li class="frame" id="frame1">
+                                    <h3>Npgsql.Internal.Converters.DateTimeConverterResolver&lt;T&gt;.Get(DateTime value, Nullable&lt;PgTypeId&gt; expectedPgTypeId, bool validateOnly)</h3>
+
+                            </li>
+                            <li class="frame" id="frame2">
+                                    <h3>Npgsql.Internal.Converters.DateTimeConverterResolver&#x2B;&lt;&gt;c.&lt;CreateResolver&gt;b__0_0(DateTimeConverterResolver&lt;DateTime&gt; resolver, DateTime value, Nullable&lt;PgTypeId&gt; expectedPgTypeId)</h3>
+
+                            </li>
+                            <li class="frame" id="frame3">
+                                    <h3>Npgsql.Internal.Converters.DateTimeConverterResolver&lt;T&gt;.Get(T value, Nullable&lt;PgTypeId&gt; expectedPgTypeId)</h3>
+
+                            </li>
+                            <li class="frame" id="frame4">
+                                    <h3>Npgsql.Internal.PgConverterResolver&lt;T&gt;.GetAsObjectInternal(PgTypeInfo typeInfo, object value, Nullable&lt;PgTypeId&gt; expectedPgTypeId)</h3>
+
+                            </li>
+                            <li class="frame" id="frame5">
+                                    <h3>Npgsql.Internal.PgResolverTypeInfo.GetResolutionAsObject(object value, Nullable&lt;PgTypeId&gt; expectedPgTypeId)</h3>
+
+                            </li>
+                            <li class="frame" id="frame6">
+                                    <h3>Npgsql.Internal.PgTypeInfo.GetObjectResolution(object value)</h3>
+
+                            </li>
+                            <li class="frame" id="frame7">
+                                    <h3>Npgsql.NpgsqlParameter.ResolveConverter(PgTypeInfo typeInfo)</h3>
+
+                            </li>
+                            <li class="frame" id="frame8">
+                                    <h3>Npgsql.NpgsqlParameter.ResolveTypeInfo(PgSerializerOptions options, IDbTypeResolver dbTypeResolver)</h3>
+
+                            </li>
+                            <li class="frame" id="frame9">
+                                    <h3>Npgsql.NpgsqlParameterCollection.ProcessParameters(ReloadableState reloadableState, bool validateValues, CommandType commandType)</h3>
+
+                            </li>
+                            <li class="frame" id="frame10">
+                                    <h3>Npgsql.NpgsqlCommand.ExecuteReader(bool async, CommandBehavior behavior, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame11">
+                                    <h3>Npgsql.NpgsqlCommand.ExecuteReader(bool async, CommandBehavior behavior, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame12">
+                                    <h3>Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame13">
+                                    <h3>Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame14">
+                                    <h3>Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame15">
+                                    <h3>Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                    </ul>
+                </li>
+                <li>
+                    <br />
+                    <div class="rawExceptionBlock">
+                        <button class="showRawException" data-exceptionDetailId="exceptionDetail1">Show raw exception details</button>
+                        <div id="exceptionDetail1" class="rawExceptionDetails">
+                            <pre class="rawExceptionStackTrace">System.ArgumentException: Cannot write DateTime with Kind=Unspecified to PostgreSQL type &#x27;timestamp with time zone&#x27;, only UTC is supported. Note that it&#x27;s not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter &#x27;value&#x27;)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver`1.Get(DateTime value, Nullable`1 expectedPgTypeId, Boolean validateOnly)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver.&lt;&gt;c.&lt;CreateResolver&gt;b__0_0(DateTimeConverterResolver`1 resolver, DateTime value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver`1.Get(T value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgConverterResolver`1.GetAsObjectInternal(PgTypeInfo typeInfo, Object value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgResolverTypeInfo.GetResolutionAsObject(Object value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgTypeInfo.GetObjectResolution(Object value)&#xD;&#xA;   at Npgsql.NpgsqlParameter.ResolveConverter(PgTypeInfo typeInfo)&#xD;&#xA;   at Npgsql.NpgsqlParameter.ResolveTypeInfo(PgSerializerOptions options, IDbTypeResolver dbTypeResolver)&#xD;&#xA;   at Npgsql.NpgsqlParameterCollection.ProcessParameters(ReloadableState reloadableState, Boolean validateValues, CommandType commandType)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)</pre>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <h2>DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.</h2>
+                    <ul>
+                            <li class="frame" id="frame16">
+                                    <h3>Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame17">
+                                    <h3>Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable&lt;ModificationCommandBatch&gt; commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame18">
+                                    <h3>Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable&lt;ModificationCommandBatch&gt; commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame19">
+                                    <h3>Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable&lt;ModificationCommandBatch&gt; commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame20">
+                                    <h3>Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList&lt;IUpdateEntry&gt; entries, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame21">
+                                    <h3>Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList&lt;IUpdateEntry&gt; entriesToSave, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame22">
+                                    <h3>Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame23">
+                                    <h3>Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync&lt;TState, TResult&gt;(TState state, Func&lt;DbContext, TState, CancellationToken, Task&lt;TResult&gt;&gt; operation, Func&lt;DbContext, TState, CancellationToken, Task&lt;ExecutionResult&lt;TResult&gt;&gt;&gt; verifySucceeded, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame24">
+                                    <h3>Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame25">
+                                    <h3>Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken)</h3>
+
+                            </li>
+                            <li class="frame" id="frame26">
+                                    <h3>EasyGas.Repositorio.Repository&lt;T&gt;.AddAsync(T entity) in <code title="C:\Users\mhsantana\Workspace\Projects\EasyGas\Repositorio\Repository.cs">Repository.cs</code></h3>
+
+                                    <button class="expandCollapseButton" data-frameId="frame26">+</button>
+                                    <div class="source">
+                                            <ol start="18" class="collapsible">
+                                                    <li><span>    </span></li>
+                                                    <li><span>    public async Task AddAsync(T entity)</span></li>
+                                                    <li><span>    {</span></li>
+                                                    <li><span>        try</span></li>
+                                                    <li><span>        {</span></li>
+                                                    <li><span>            _dbSet.Add(entity);</span></li>
+                                            </ol>
+
+                                        <ol start="24" class="highlight">
+                                                <li><span>            await _context.SaveChangesAsync();</span></li>
+                                        </ol>
+
+                                            <ol start='25' class="collapsible">
+                                                    <li><span>        }</span></li>
+                                                    <li><span>        catch (DbUpdateException ex)</span></li>
+                                                    <li><span>        {</span></li>
+                                                    <li><span>            var erroOriginal = ex.InnerException?.Message;</span></li>
+                                                    <li><span>            throw new Exception(erroOriginal, ex);</span></li>
+                                                    <li><span>        }</span></li>
+                                            </ol>
+                                    </div>
+                            </li>
+                    </ul>
+                </li>
+                <li>
+                    <br />
+                    <div class="rawExceptionBlock">
+                        <button class="showRawException" data-exceptionDetailId="exceptionDetail2">Show raw exception details</button>
+                        <div id="exceptionDetail2" class="rawExceptionDetails">
+                            <pre class="rawExceptionStackTrace">Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.&#xD;&#xA; ---&gt; System.ArgumentException: Cannot write DateTime with Kind=Unspecified to PostgreSQL type &#x27;timestamp with time zone&#x27;, only UTC is supported. Note that it&#x27;s not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter &#x27;value&#x27;)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver`1.Get(DateTime value, Nullable`1 expectedPgTypeId, Boolean validateOnly)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver.&lt;&gt;c.&lt;CreateResolver&gt;b__0_0(DateTimeConverterResolver`1 resolver, DateTime value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver`1.Get(T value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgConverterResolver`1.GetAsObjectInternal(PgTypeInfo typeInfo, Object value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgResolverTypeInfo.GetResolutionAsObject(Object value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgTypeInfo.GetObjectResolution(Object value)&#xD;&#xA;   at Npgsql.NpgsqlParameter.ResolveConverter(PgTypeInfo typeInfo)&#xD;&#xA;   at Npgsql.NpgsqlParameter.ResolveTypeInfo(PgSerializerOptions options, IDbTypeResolver dbTypeResolver)&#xD;&#xA;   at Npgsql.NpgsqlParameterCollection.ProcessParameters(ReloadableState reloadableState, Boolean validateValues, CommandType commandType)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   --- End of inner exception stack trace ---&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)&#xD;&#xA;   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)&#xD;&#xA;   at EasyGas.Repositorio.Repository`1.AddAsync(T entity) in C:\Users\mhsantana\Workspace\Projects\EasyGas\Repositorio\Repository.cs:line 24</pre>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <h2>Exception: Cannot write DateTime with Kind=Unspecified to PostgreSQL type &#x27;timestamp with time zone&#x27;, only UTC is supported. Note that it&#x27;s not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter &#x27;value&#x27;)</h2>
+                    <ul>
+                            <li class="frame" id="frame27">
+                                    <h3>EasyGas.Repositorio.Repository&lt;T&gt;.AddAsync(T entity) in <code title="C:\Users\mhsantana\Workspace\Projects\EasyGas\Repositorio\Repository.cs">Repository.cs</code></h3>
+
+                                    <button class="expandCollapseButton" data-frameId="frame27">+</button>
+                                    <div class="source">
+                                            <ol start="23" class="collapsible">
+                                                    <li><span>            _dbSet.Add(entity);</span></li>
+                                                    <li><span>            await _context.SaveChangesAsync();</span></li>
+                                                    <li><span>        }</span></li>
+                                                    <li><span>        catch (DbUpdateException ex)</span></li>
+                                                    <li><span>        {</span></li>
+                                                    <li><span>            var erroOriginal = ex.InnerException?.Message;</span></li>
+                                            </ol>
+
+                                        <ol start="29" class="highlight">
+                                                <li><span>            throw new Exception(erroOriginal, ex);</span></li>
+                                        </ol>
+
+                                            <ol start='30' class="collapsible">
+                                                    <li><span>        }</span></li>
+                                                    <li><span>    </span></li>
+                                                    <li><span>    }</span></li>
+                                                    <li><span>    </span></li>
+                                                    <li><span>    public IQueryable&lt;T&gt; GetAllAsync()</span></li>
+                                                    <li><span>    {</span></li>
+                                            </ol>
+                                    </div>
+                            </li>
+                            <li class="frame" id="frame28">
+                                    <h3>EasyGas.Service.OrdemServicoService.PostOrdemServico(OrdemServicoVM vm) in <code title="C:\Users\mhsantana\Workspace\Projects\EasyGas\Service\OrdemServicoService.cs">OrdemServicoService.cs</code></h3>
+
+                                    <button class="expandCollapseButton" data-frameId="frame28">+</button>
+                                    <div class="source">
+                                            <ol start="31" class="collapsible">
+                                                    <li><span>            DataAbertura = vm.DataInicio.Date &#x2B; agora.TimeOfDay,</span></li>
+                                                    <li><span>            DataFechamento = vm.DataFim,</span></li>
+                                                    <li><span>            ValorTotal = vm.ValorOs,</span></li>
+                                                    <li><span>            OsFinalizada = false</span></li>
+                                                    <li><span>        };</span></li>
+                                                    <li><span></span></li>
+                                            </ol>
+
+                                        <ol start="37" class="highlight">
+                                                <li><span>        await _ordemServicoRepository.AddAsync(ordem);</span></li>
+                                        </ol>
+
+                                            <ol start='38' class="collapsible">
+                                                    <li><span></span></li>
+                                                    <li><span>        return ordem;</span></li>
+                                                    <li><span>    }</span></li>
+                                                    <li><span></span></li>
+                                                    <li><span>    public async Task&lt;List&lt;OrdemServicoVM&gt;&gt; GetAllOrdensServico(bool? finalizada)</span></li>
+                                                    <li><span>    {</span></li>
+                                            </ol>
+                                    </div>
+                            </li>
+                            <li class="frame" id="frame29">
+                                    <h3>EasyGas.Controllers.OrdemServicoController.PostOs(OrdemServicoVM vm) in <code title="C:\Users\mhsantana\Workspace\Projects\EasyGas\Controllers\OrdemServicoController.cs">OrdemServicoController.cs</code></h3>
+
+                                    <button class="expandCollapseButton" data-frameId="frame29">+</button>
+                                    <div class="source">
+                                            <ol start="50" class="collapsible">
+                                                    <li><span>            vm.Colab = new SelectList(await _colaboradoresService.GetAllColaboradores(), &quot;Id&quot;, &quot;Nome&quot;);</span></li>
+                                                    <li><span>            vm.Clientes = new SelectList(await _clientesService.GetAllClientes(), &quot;Id&quot;, &quot;RazaoSocial&quot;);</span></li>
+                                                    <li><span>            </span></li>
+                                                    <li><span>            return View(vm);</span></li>
+                                                    <li><span>        }</span></li>
+                                                    <li><span>        </span></li>
+                                            </ol>
+
+                                        <ol start="56" class="highlight">
+                                                <li><span>        await _ordemServicoService.PostOrdemServico(vm);</span></li>
+                                        </ol>
+
+                                            <ol start='57' class="collapsible">
+                                                    <li><span>        return RedirectToAction(nameof(GetOs));</span></li>
+                                                    <li><span>    }</span></li>
+                                                    <li><span>}</span></li>
+                                            </ol>
+                                    </div>
+                            </li>
+                            <li class="frame" id="frame30">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor&#x2B;TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, object controller, object[] arguments)</h3>
+
+                            </li>
+                            <li class="frame" id="frame31">
+                                    <h3>System.Runtime.CompilerServices.ValueTaskAwaiter&lt;TResult&gt;.GetResult()</h3>
+
+                            </li>
+                            <li class="frame" id="frame32">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeActionMethodAsync&gt;g__Logged|12_1(ControllerActionInvoker invoker)</h3>
+
+                            </li>
+                            <li class="frame" id="frame33">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeNextActionFilterAsync&gt;g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)</h3>
+
+                            </li>
+                            <li class="frame" id="frame34">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)</h3>
+
+                            </li>
+                            <li class="frame" id="frame35">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(ref State next, ref Scope scope, ref object state, ref bool isCompleted)</h3>
+
+                            </li>
+                            <li class="frame" id="frame36">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()</h3>
+
+                            </li>
+                            <li class="frame" id="frame37">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeNextResourceFilter&gt;g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)</h3>
+
+                            </li>
+                            <li class="frame" id="frame38">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)</h3>
+
+                            </li>
+                            <li class="frame" id="frame39">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(ref State next, ref Scope scope, ref object state, ref bool isCompleted)</h3>
+
+                            </li>
+                            <li class="frame" id="frame40">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()</h3>
+
+                            </li>
+                            <li class="frame" id="frame41">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)</h3>
+
+                            </li>
+                            <li class="frame" id="frame42">
+                                    <h3>Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)</h3>
+
+                            </li>
+                            <li class="frame" id="frame43">
+                                    <h3>Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)</h3>
+
+                            </li>
+                            <li class="frame" id="frame44">
+                                    <h3>Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)</h3>
+
+                            </li>
+                            <li class="frame" id="frame45">
+                                    <h3>Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)</h3>
+
+                            </li>
+                    </ul>
+                </li>
+                <li>
+                    <br />
+                    <div class="rawExceptionBlock">
+                        <button class="showRawException" data-exceptionDetailId="exceptionDetail3">Show raw exception details</button>
+                        <div id="exceptionDetail3" class="rawExceptionDetails">
+                            <pre class="rawExceptionStackTrace">System.Exception: Cannot write DateTime with Kind=Unspecified to PostgreSQL type &#x27;timestamp with time zone&#x27;, only UTC is supported. Note that it&#x27;s not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter &#x27;value&#x27;)&#xD;&#xA; ---&gt; Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.&#xD;&#xA; ---&gt; System.ArgumentException: Cannot write DateTime with Kind=Unspecified to PostgreSQL type &#x27;timestamp with time zone&#x27;, only UTC is supported. Note that it&#x27;s not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter &#x27;value&#x27;)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver`1.Get(DateTime value, Nullable`1 expectedPgTypeId, Boolean validateOnly)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver.&lt;&gt;c.&lt;CreateResolver&gt;b__0_0(DateTimeConverterResolver`1 resolver, DateTime value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.Converters.DateTimeConverterResolver`1.Get(T value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgConverterResolver`1.GetAsObjectInternal(PgTypeInfo typeInfo, Object value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgResolverTypeInfo.GetResolutionAsObject(Object value, Nullable`1 expectedPgTypeId)&#xD;&#xA;   at Npgsql.Internal.PgTypeInfo.GetObjectResolution(Object value)&#xD;&#xA;   at Npgsql.NpgsqlParameter.ResolveConverter(PgTypeInfo typeInfo)&#xD;&#xA;   at Npgsql.NpgsqlParameter.ResolveTypeInfo(PgSerializerOptions options, IDbTypeResolver dbTypeResolver)&#xD;&#xA;   at Npgsql.NpgsqlParameterCollection.ProcessParameters(ReloadableState reloadableState, Boolean validateValues, CommandType commandType)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   --- End of inner exception stack trace ---&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)&#xD;&#xA;   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)&#xD;&#xA;   at EasyGas.Repositorio.Repository`1.AddAsync(T entity) in C:\Users\mhsantana\Workspace\Projects\EasyGas\Repositorio\Repository.cs:line 24&#xD;&#xA;   --- End of inner exception stack trace ---&#xD;&#xA;   at EasyGas.Repositorio.Repository`1.AddAsync(T entity) in C:\Users\mhsantana\Workspace\Projects\EasyGas\Repositorio\Repository.cs:line 29&#xD;&#xA;   at EasyGas.Service.OrdemServicoService.PostOrdemServico(OrdemServicoVM vm) in C:\Users\mhsantana\Workspace\Projects\EasyGas\Service\OrdemServicoService.cs:line 37&#xD;&#xA;   at EasyGas.Controllers.OrdemServicoController.PostOs(OrdemServicoVM vm) in C:\Users\mhsantana\Workspace\Projects\EasyGas\Controllers\OrdemServicoController.cs:line 56&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeActionMethodAsync&gt;g__Logged|12_1(ControllerActionInvoker invoker)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeNextActionFilterAsync&gt;g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()&#xD;&#xA;--- End of stack trace from previous location ---&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeNextResourceFilter&gt;g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()&#xD;&#xA;--- End of stack trace from previous location ---&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;&#xA;   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;&#xA;   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)&#xD;&#xA;   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)&#xD;&#xA;   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)</pre>
+                        </div>
+                    </div>
+                </li>
+        </ul>
+    </div>
+
+    <div id="querypage" class="page">
+            <p>No query string data.</p>
+    </div>
+
+    <div id="cookiespage" class="page">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td>.AspNetCore.Antiforgery.Xm5JtmSxZ0g</td>
+                            <td>CfDJ8Cd1fVyoaTlNsi4yb-qs1Rs-eyg_ZZXywugMi1zPEgjsUUbhGvDCa5OYQVVCZ1Ti-6v3-iH9EGSq4wFgLkv52YjQvg89HYLZ_5uP1LIcZmFAN1zhzwzQoMLsejlcLPGtz6499t4QrjF9hoKxmMWPwOk</td>
+                        </tr>
+                </tbody>
+            </table>
+    </div>
+
+    <div id="headerspage" class="page">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                            <tr>
+                                <td>Accept</td>
+                                <td>text/html,application/xhtml&#x2B;xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</td>
+                            </tr>
+                            <tr>
+                                <td>Accept-Encoding</td>
+                                <td>gzip, deflate, br, zstd</td>
+                            </tr>
+                            <tr>
+                                <td>Accept-Language</td>
+                                <td>pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6</td>
+                            </tr>
+                            <tr>
+                                <td>Cache-Control</td>
+                                <td>max-age=0</td>
+                            </tr>
+                            <tr>
+                                <td>Connection</td>
+                                <td>keep-alive</td>
+                            </tr>
+                            <tr>
+                                <td>Content-Length</td>
+                                <td>319</td>
+                            </tr>
+                            <tr>
+                                <td>Content-Type</td>
+                                <td>application/x-www-form-urlencoded</td>
+                            </tr>
+                            <tr>
+                                <td>Cookie</td>
+                                <td>.AspNetCore.Antiforgery.Xm5JtmSxZ0g=CfDJ8Cd1fVyoaTlNsi4yb-qs1Rs-eyg_ZZXywugMi1zPEgjsUUbhGvDCa5OYQVVCZ1Ti-6v3-iH9EGSq4wFgLkv52YjQvg89HYLZ_5uP1LIcZmFAN1zhzwzQoMLsejlcLPGtz6499t4QrjF9hoKxmMWPwOk</td>
+                            </tr>
+                            <tr>
+                                <td>Host</td>
+                                <td>127.0.0.1:5001</td>
+                            </tr>
+                            <tr>
+                                <td>Origin</td>
+                                <td>http://127.0.0.1:5001</td>
+                            </tr>
+                            <tr>
+                                <td>Referer</td>
+                                <td>http://127.0.0.1:5001/OrdemServico/PostOs</td>
+                            </tr>
+                            <tr>
+                                <td>sec-ch-ua</td>
+                                <td>&quot;Microsoft Edge WebView2&quot;;v=&quot;155&quot;, &quot;Not(A:Brand&quot;;v=&quot;24&quot;, &quot;Microsoft Edge&quot;;v=&quot;155&quot;, &quot;Chromium&quot;;v=&quot;155&quot;</td>
+                            </tr>
+                            <tr>
+                                <td>sec-ch-ua-mobile</td>
+                                <td>?0</td>
+                            </tr>
+                            <tr>
+                                <td>sec-ch-ua-platform</td>
+                                <td>&quot;Windows&quot;</td>
+                            </tr>
+                            <tr>
+                                <td>Sec-Fetch-Dest</td>
+                                <td>document</td>
+                            </tr>
+                            <tr>
+                                <td>Sec-Fetch-Mode</td>
+                                <td>navigate</td>
+                            </tr>
+                            <tr>
+                                <td>Sec-Fetch-Site</td>
+                                <td>same-origin</td>
+                            </tr>
+                            <tr>
+                                <td>Sec-Fetch-User</td>
+                                <td>?1</td>
+                            </tr>
+                            <tr>
+                                <td>Upgrade-Insecure-Requests</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>User-Agent</td>
+                                <td>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0</td>
+                            </tr>
+                </tbody>
+            </table>
+    </div>
+
+    <div id="routingpage" class="page">
+        <h2>Endpoint</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Display Name</td>
+                        <td>EasyGas.Controllers.OrdemServicoController.PostOs (EasyGas)</td>
+                    </tr>
+                        <tr>
+                            <td>Route Pattern</td>
+                            <td>{controller=Home}/{action=Index}/{id?}</td>
+                        </tr>
+                        <tr>
+                            <td>Route Order</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Route HTTP Method</td>
+                            <td>POST</td>
+                        </tr>
+                </tbody>
+            </table>
+        <h2>Endpoint Metadata</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td><span title="System.Runtime.CompilerServices.NullableContextAttribute">NullableContextAttribute</span></td>
+                            <td>
+System.Runtime.CompilerServices.NullableContextAttribute                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="System.Runtime.CompilerServices.NullableAttribute">NullableAttribute</span></td>
+                            <td>
+System.Runtime.CompilerServices.NullableAttribute                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Mvc.ControllerAttribute">ControllerAttribute</span></td>
+                            <td>
+Microsoft.AspNetCore.Mvc.ControllerAttribute                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="System.Runtime.CompilerServices.AsyncStateMachineAttribute">AsyncStateMachineAttribute</span></td>
+                            <td>
+System.Runtime.CompilerServices.AsyncStateMachineAttribute                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="System.Diagnostics.DebuggerStepThroughAttribute">DebuggerStepThroughAttribute</span></td>
+                            <td>
+System.Diagnostics.DebuggerStepThroughAttribute                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Mvc.HttpPostAttribute">HttpPostAttribute</span></td>
+                            <td>
+Microsoft.AspNetCore.Mvc.HttpPostAttribute                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Routing.HttpMethodMetadata">HttpMethodMetadata</span></td>
+                            <td>
+HttpMethods: POST, Cors: False                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor">ControllerActionDescriptor</span></td>
+                            <td>
+Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Routing.DataTokensMetadata">DataTokensMetadata</span></td>
+                            <td>
+DataTokens:                             </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Routing.RouteNameMetadata">RouteNameMetadata</span></td>
+                            <td>
+RouteName: default                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Mvc.Filters.ControllerActionFilter">ControllerActionFilter</span></td>
+                            <td>
+Microsoft.AspNetCore.Mvc.Filters.ControllerActionFilter                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Mvc.ViewFeatures.SaveTempDataAttribute">SaveTempDataAttribute</span></td>
+                            <td>
+Microsoft.AspNetCore.Mvc.ViewFeatures.SaveTempDataAttribute                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter">UnsupportedContentTypeFilter</span></td>
+                            <td>
+Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Mvc.ActionConstraints.HttpMethodActionConstraint">HttpMethodActionConstraint</span></td>
+                            <td>
+Microsoft.AspNetCore.Mvc.ActionConstraints.HttpMethodActionConstraint                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Routing.SuppressLinkGenerationMetadata">SuppressLinkGenerationMetadata</span></td>
+                            <td>
+SuppressLinkGeneration: True                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Microsoft.AspNetCore.Routing.RouteEndpointBuilder+RouteDiagnosticsMetadata">RouteDiagnosticsMetadata</span></td>
+                            <td>
+Route: {controller=Home}/{action=Index}/{id?}                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        <h2>Route Values</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td>action</td>
+                            <td>PostOs</td>
+                        </tr>
+                        <tr>
+                            <td>controller</td>
+                            <td>OrdemServico</td>
+                        </tr>
+                </tbody>
+            </table>
+    </div>
+
+    <script>
+        //<!--
+        (function (window, undefined) {
+    "use strict";
+
+    function ns(selector, element) {
+        return new NodeCollection(selector, element);
+    }
+
+    function NodeCollection(selector, element) {
+        this.items = [];
+        element = element || window.document;
+
+        var nodeList;
+
+        if (typeof (selector) === "string") {
+            nodeList = element.querySelectorAll(selector);
+            for (var i = 0, l = nodeList.length; i < l; i++) {
+                this.items.push(nodeList.item(i));
+            }
+        }
+    }
+
+    NodeCollection.prototype = {
+        each: function (callback) {
+            for (var i = 0, l = this.items.length; i < l; i++) {
+                callback(this.items[i], i);
+            }
+            return this;
+        },
+
+        children: function (selector) {
+            var children = [];
+
+            this.each(function (el) {
+                children = children.concat(ns(selector, el).items);
+            });
+
+            return ns(children);
+        },
+
+        hide: function () {
+            this.each(function (el) {
+                el.style.display = "none";
+            });
+
+            return this;
+        },
+
+        toggle: function () {
+            this.each(function (el) {
+                el.style.display = el.style.display === "none" ? "" : "none";
+            });
+
+            return this;
+        },
+
+        show: function () {
+            this.each(function (el) {
+                el.style.display = "";
+            });
+
+            return this;
+        },
+
+        addClass: function (className) {
+            this.each(function (el) {
+                var existingClassName = el.className,
+                    classNames;
+                if (!existingClassName) {
+                    el.className = className;
+                } else {
+                    classNames = existingClassName.split(" ");
+                    if (classNames.indexOf(className) < 0) {
+                        el.className = existingClassName + " " + className;
+                    }
+                }
+            });
+
+            return this;
+        },
+
+        removeClass: function (className) {
+            this.each(function (el) {
+                var existingClassName = el.className,
+                    classNames, index;
+                if (existingClassName === className) {
+                    el.className = "";
+                } else if (existingClassName) {
+                    classNames = existingClassName.split(" ");
+                    index = classNames.indexOf(className);
+                    if (index > 0) {
+                        classNames.splice(index, 1);
+                        el.className = classNames.join(" ");
+                    }
+                }
+            });
+
+            return this;
+        },
+
+        attr: function (name) {
+            if (this.items.length === 0) {
+                return null;
+            }
+
+            return this.items[0].getAttribute(name);
+        },
+
+        on: function (eventName, handler) {
+            this.each(function (el, idx) {
+                var callback = function (e) {
+                    e = e || window.event;
+                    if (!e.which && e.keyCode) {
+                        e.which = e.keyCode; // Normalize IE8 key events
+                    }
+                    handler.apply(el, [e]);
+                };
+
+                if (el.addEventListener) { // DOM Events
+                    el.addEventListener(eventName, callback, false);
+                } else if (el.attachEvent) { // IE8 events
+                    el.attachEvent("on" + eventName, callback);
+                } else {
+                    el["on" + type] = callback;
+                }
+            });
+
+            return this;
+        },
+
+        click: function (handler) {
+            return this.on("click", handler);
+        },
+
+        keypress: function (handler) {
+            return this.on("keypress", handler);
+        }
+    };
+
+    function frame(el) {
+        ns(".source .collapsible", el).toggle();
+    }
+
+    function expandCollapseButton(el) {
+        var frameId = el.getAttribute("data-frameId");
+        frame(document.getElementById(frameId));
+        if (el.innerText === "+") {
+            el.innerText = "-";
+        }
+        else {
+            el.innerText = "+";
+        }
+    }
+
+    function tab(el) {
+        var unselected = ns("#header .selected").removeClass("selected").attr("id");
+        var selected = ns("#" + el.id).addClass("selected").attr("id");
+
+        ns("#" + unselected + "page").hide();
+        ns("#" + selected + "page").show();
+    }
+
+    ns(".rawExceptionDetails").hide();
+    ns(".collapsible").hide();
+    ns(".page").hide();
+    ns("#stackpage").show();
+
+    ns(".expandCollapseButton")
+        .click(function () {
+            expandCollapseButton(this);
+        })
+        .keypress(function (e) {
+            if (e.which === 13) {
+                expandCollapseButton(this);
+            }
+        });
+
+    ns("#header li")
+        .click(function () {
+            tab(this);
+        })
+        .keypress(function (e) {
+            if (e.which === 13) {
+                tab(this);
+            }
+        });
+
+    ns(".showRawException")
+        .click(function () {
+            var exceptionDetailId = this.getAttribute("data-exceptionDetailId");
+            ns("#" + exceptionDetailId).toggle();
+        });
+})(window);
+        //-->
+    </script>
+</body>
+</html>

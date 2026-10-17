@@ -1,0 +1,98 @@
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model IEnumerable<EasyGas.VM.OrdemServicoVM>
+
+@{
+    ViewData["Title"] = "Ordens de Serviço";
+}
+
+<div class="min-h-screen bg-[#f3f3f3]">
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="p-6">
+
+        <div class="max-w-[1100px] mx-auto">
+
+            <!-- TÍTULO -->
+            <div class="mb-5">
+                <h1 class="text-[20px] font-bold text-[#222]">
+                    Ordens de Serviço
+                </h1>
+
+                <p class="text-[12px] text-[#777]">
+                    Todas os Ordens de serviço sistema.
+                </p>
+            </div>
+
+           
+            <div class="flex gap-2 mb-4">
+
+                <form hx-get="@Url.Action("GetOs", "OrdemServico")"
+                      hx-target="#tabela-ordensServico-container"
+                      hx-indicator="#loading-busca"
+                      hx-trigger="submit"
+                      class="mb-4">
+
+                    <!-- Filtros -->
+                    <div class="flex gap-4 mb-3 text-[12px] text-[#555]">
+                        <label class="flex items-center gap-1 cursor-pointer">
+                            <input type="radio" name="finalizada" value="" checked class="radio radio-xs" />
+                            Todas
+                        </label>
+
+                        <label class="flex items-center gap-1 cursor-pointer">
+                            <input type="radio" name="finalizada" value="false" class="radio radio-xs" />
+                            Pendentes
+                        </label>
+
+                        <label class="flex items-center gap-1 cursor-pointer">
+                            <input type="radio" name="finalizada" value="true" class="radio radio-xs" />
+                            Finalizadas
+                        </label>
+                    </div>
+
+                    <!-- Busca + botões -->
+                    <div class="flex gap-2">
+                        @*<input type="text"
+                               name="termoBusca"
+                               placeholder="Buscar por Os..."
+                               class="w-full h-[38px] px-3 bg-white border border-[#d5d5d5] rounded-md text-[12px] text-[#555] outline-none focus:border-[#168bd0]" />*@
+
+                        <button type="submit"
+                                class="h-[38px] px-4 bg-white border border-[#d5d5d5] rounded-md text-[12px] text-[#555] hover:bg-[#f7f7f7]">
+                            Buscar
+                        </button>
+
+                        <a asp-controller="OrdemServico"
+                           asp-action="PostOs"
+                           class="h-[38px] px-4 inline-flex items-center whitespace-nowrap bg-[#168bd0] border border-[#168bd0] rounded-md text-[12px] text-white hover:bg-[#137bb8]">
+                            Nova OS
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- LOADING -->
+            <div id="loading-busca"
+                 class="htmx-indicator flex justify-center py-2">
+
+                <span class="loading loading-dots loading-sm"></span>
+
+            </div>
+
+            <!-- TABELA -->
+            <div id="tabela-ordensServico-container"
+                 class="bg-white border border-[#dedede] rounded-md overflow-hidden">
+
+                @await Html.PartialAsync("_TabelaOsPartial", Model)
+
+            </div>
+
+            <!-- WIZARD -->
+            <div id="cliente-wizard-container"></div>
+
+        </div>
+        
+    </main>
+
+</div>

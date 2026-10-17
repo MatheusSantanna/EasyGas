@@ -1,0 +1,68 @@
+@model IEnumerable<EasyGas.VM.OrdemServicoVM>
+
+@{
+    var mostrarFechamento = Model.Any(o => o.OsFinalizada);
+}
+
+<table class="table table-zebra w-full">
+    <thead>
+    <tr>
+        <th>Numero OS</th>
+        <th>Cliente</th>
+        <th>Tecnico</th>
+        <th>Data Abertura</th>
+        <th>Data Fechamento</th>    
+        <th>Tipo Serviço</th>
+        <th>Valor OS</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var os in Model)
+    {
+        <tr class="hover cursor-pointer"
+            onclick="window.location='@Url.Action("PostOs", "OrdemServico", new { id = os.Id })'">
+            <td>@os.NumeroOS</td>
+            <td>@os.NomeCliente</td>
+            <td>@os.NomeExecutor</td>
+            <td>@os.DataInicio.ToString("dd/MM/yyyy")</td>
+            @if (mostrarFechamento == true)
+            {
+                <td>@os.DataFim?.ToString("dd/MM/yyyy")</td>
+            }
+            else
+            {
+                <td> </td>
+            }
+            <td>@os.TipoServico</td> 
+            <td>R$ @os.ValorOs</td>
+            <td>
+                @if (os.OsFinalizada)
+                {
+                    
+                    <span class="badge badge-soft badge-accent gap-2 rounded-full">
+                        <span class="status status-accent"></span>
+                        Finalizada
+                    </span>
+                    
+                }
+                else
+                {
+                    
+                    <span class="badge badge-soft badge-warning gap-2 rounded-full">
+                        <span class="status status-warning"></span>
+                        Pendente
+                    </span>
+                    
+                }
+            </td>
+        </tr>
+    }
+    @if (!Model.Any())
+    {
+        <tr>
+            <td colspan="2" class="text-center py-4">Nenhum OS encontrado.</td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -17,7 +17,7 @@ namespace EasyGas.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -103,23 +103,17 @@ namespace EasyGas.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("ClientesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ColaboradorId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ColaboradoresId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DataAbertura")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DataFechamento")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("FaturamentoId")
                         .HasColumnType("integer");

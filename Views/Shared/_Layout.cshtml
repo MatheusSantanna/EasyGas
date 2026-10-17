@@ -12,18 +12,9 @@
 
     <title>@ViewData["Title"] - EasyGas</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
-          rel="stylesheet" />
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script>
-        tailwind.config = {
-            daisyui: {
-                themes: ["corporate"]
-            }
-        }
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@4"></script>
 
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
@@ -75,6 +66,14 @@
                        asp-action="GetColaboradores"
                        class="text-sm py-3">
                         Colaboradores
+                    </a>
+                </li>
+                
+                <li>
+                    <a asp-controller="OrdemServico"
+                       asp-action="GetOs"
+                       class="text-sm py-3">
+                        Ordens de Serviço
                     </a>
                 </li>
 

@@ -7,7 +7,7 @@ public interface IOrdemServicoService
 {
     Task<OrdemServico?> GetOsById(int id);
     Task<OrdemServico> PostOrdemServico(OrdemServicoVM vm);
-    Task<List<OrdemServicoVM>> GetAllOrdensServico(bool finalizada);
+    Task<List<OrdemServicoVM>> GetAllOrdensServico(bool? finalizada);
     Task<List<OrdemServicoVM>> GetOrdensAbertas() => GetAllOrdensServico(finalizada: false);
     public Task<List<OrdemServicoVM>> GetOrdensFechadas() => GetAllOrdensServico(finalizada: true);
 }

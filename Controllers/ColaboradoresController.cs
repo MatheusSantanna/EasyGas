@@ -51,8 +51,6 @@ public class ColaboradoresController : Controller
     {
         if (!ModelState.IsValid)
             return View(colab);
-        
-            var colabExist = await _colaboradores.GetColaboradoresById(colab.Id);
             
         await _colaboradores.PostColaborador(colab);
         return RedirectToAction(nameof(GetColaboradores));

@@ -38,6 +38,7 @@ namespace EasyGas
                 builder.Services.AddScoped<IOrdemServicoService, OrdemServicoService>();
                 builder.Services.AddScoped<IColaboradoresService, ColaboradoresService>();
                 builder.Services.AddScoped<IFaturamentoService, FaturamentoService>();
+                builder.Services.AddScoped<IAnexoOsService, AnexoOsService>();
                 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
                 
                 var app = builder.Build();

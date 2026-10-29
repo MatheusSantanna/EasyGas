@@ -22,6 +22,33 @@ namespace EasyGas.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("EasyGas.Models.AnexoOs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Conteudo")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("NomeOriginal")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<int>("OrdemServicoId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrdemServicoId");
+
+                    b.ToTable("AnexoOs");
+                });
+
             modelBuilder.Entity("EasyGas.Models.Clientes", b =>
                 {
                     b.Property<int>("Id")
@@ -141,6 +168,17 @@ namespace EasyGas.Migrations
                     b.ToTable("OrdemServico");
                 });
 
+            modelBuilder.Entity("EasyGas.Models.AnexoOs", b =>
+                {
+                    b.HasOne("EasyGas.Models.OrdemServico", "OrdemServico")
+                        .WithMany("Anexos")
+                        .HasForeignKey("OrdemServicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrdemServico");
+                });
+
             modelBuilder.Entity("EasyGas.Models.OrdemServico", b =>
                 {
                     b.HasOne("EasyGas.Models.Clientes", "Clientes")
@@ -167,6 +205,11 @@ namespace EasyGas.Migrations
             modelBuilder.Entity("EasyGas.Models.Faturamento", b =>
                 {
                     b.Navigation("OrdensServiços");
+                });
+
+            modelBuilder.Entity("EasyGas.Models.OrdemServico", b =>
+                {
+                    b.Navigation("Anexos");
                 });
 #pragma warning restore 612, 618
         }

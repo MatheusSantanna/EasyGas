@@ -51,6 +51,7 @@ public class OrdemServicoService : IOrdemServicoService
                 x => x.DataAbertura)
             .Select(x => new OrdemServicoVM
             {
+                Id = x.Id,
                 NumeroOS = x.NumeroOs,
                 ClienteId = x.ClientesId,
                 ColaboradorId = x.ColaboradoresId,
@@ -59,7 +60,8 @@ public class OrdemServicoService : IOrdemServicoService
                 ValorOs = x.ValorTotal,
                 DataInicio = x.DataAbertura,
                 DataFim = x.DataFechamento,
-                OsFinalizada = x.DataFechamento != null
+                OsFinalizada = x.DataFechamento != null,
+                Anexos = x.Anexos
             }).ToListAsync();
         
         return query;
@@ -67,13 +69,17 @@ public class OrdemServicoService : IOrdemServicoService
     
     public Task<List<OrdemServicoVM>> GetOrdensAbertas() => GetAllOrdensServico(finalizada: false);
     public Task<List<OrdemServicoVM>> GetOrdensFechadas() => GetAllOrdensServico(finalizada: true);
-    
-    
-    public async Task<OrdemServico?> GetOsById(int id)
+
+
+    public async Task<OrdemServico?> GetOsByIdAsync(int id)
     {
-        return await _ordemServicoRepository.GetByIdAsync(id);
+        return await _ordemServicoRepository
+            .GetAllAsync()
+            .Include(x => x.Clientes)
+            .Include(x => x.Colaboradores)
+            .Include(x => x.Anexos)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
-    
-    
-    
+     
+
 }

@@ -23,9 +23,10 @@ public class OrdemServicoVM
     public DateTime DataInicio { get; set; }
     public DateTime? DataFim { get; set; }
 
-    public bool OsFinalizada { get; set; }  
-    
+    public bool OsFinalizada { get; set; }
+    public IEnumerable<AnexoOs>? Anexos { get; set; }
+
     public IEnumerable<SelectListItem>? Clientes { get; set; }
-    
+
     public IEnumerable<SelectListItem>? Colab { get; set; }
 }

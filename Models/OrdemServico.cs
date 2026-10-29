@@ -19,6 +19,8 @@ public class OrdemServico
     public DateTime? DataFechamento { get; set; }
     public decimal ValorTotal { get; set; }
     public bool OsFinalizada {  get; set; }
+    public ICollection<AnexoOs> Anexos { get; set; }
+        = new List<AnexoOs>();
 }
 
 

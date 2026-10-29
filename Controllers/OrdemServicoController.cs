@@ -56,4 +56,12 @@ public class OrdemServicoController : Controller
         await _ordemServicoService.PostOrdemServico(vm);
         return RedirectToAction(nameof(GetOs));
     }
+
+
+    public async Task<IActionResult> DetailOs(int id)
+    {
+        var os = await _ordemServicoService.GetOsByIdAsync(id);
+        return PartialView("_ModalDetalheOsPartial", os);
+        //return View(os);
+    }
 }

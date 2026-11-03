@@ -12,18 +12,10 @@ public class AnexoOsService : IAnexoOsService
     public AnexoOsService(IRepository<AnexoOs> anexoOsRepository)
     {
         _anexoOsRepository = anexoOsRepository;
-    }
-    public async Task SalvaAnexoOs(List<AnexoOs> anexo)
+    } 
+     
+    public async Task<AnexoOs?> BuscarPorId(int id)
     {
-        foreach (var item in anexo)
-        {
-            await _anexoOsRepository.AddAsync(item);
-        } 
-    }
-
-    //ajustar aqui
-    public async Task<List<AnexoOs>> BuscarTodosAnexoOs(int idOs)
-    {
-        return await _anexoOsRepository.GetAllAsync().ToListAsync();
+        return await _anexoOsRepository.GetByIdAsync(id);
     }
 }

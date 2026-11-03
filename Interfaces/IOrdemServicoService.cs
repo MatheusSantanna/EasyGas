@@ -9,5 +9,7 @@ public interface IOrdemServicoService
     Task<OrdemServico> PostOrdemServico(OrdemServicoVM vm);
     Task<List<OrdemServicoVM>> GetAllOrdensServico(bool? finalizada);
     Task<List<OrdemServicoVM>> GetOrdensAbertas() => GetAllOrdensServico(finalizada: false);
-    public Task<List<OrdemServicoVM>> GetOrdensFechadas() => GetAllOrdensServico(finalizada: true);
+    Task<List<OrdemServicoVM>> GetOrdensFechadas() => GetAllOrdensServico(finalizada: true);
+    Task FinalizarOs(int id, List<IFormFile> anexos); 
+
 }

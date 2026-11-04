@@ -9,7 +9,8 @@ namespace EasyGas.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=EasyGas;Username=postgres;Password=Matheus100@");
+            //optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=EasyGas;Username=postgres;Password=Matheus100@");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=EasyGas;Username=postgres;Password=123");
 
             return new AppDbContext(optionsBuilder.Options);
         }

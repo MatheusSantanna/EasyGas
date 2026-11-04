@@ -1,7 +1,9 @@
 using EasyGas.Interfaces;
+using EasyGas.Models;
 using EasyGas.VM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.Mime;
 
 namespace EasyGas.Controllers;
 
@@ -10,12 +12,14 @@ public class OrdemServicoController : Controller
     private readonly IOrdemServicoService _ordemServicoService;
     private readonly IClientesService _clientesService;
     private readonly IColaboradoresService _colaboradoresService;
+    private readonly IAnexoOsService _anexoOsService;
 
-    public OrdemServicoController(IOrdemServicoService ordemServicoService,  IClientesService clientesService, IColaboradoresService colaboradoresService)
+    public OrdemServicoController(IOrdemServicoService ordemServicoService,  IClientesService clientesService, IColaboradoresService colaboradoresService, IAnexoOsService anexoOsService)
     {
         _ordemServicoService = ordemServicoService;
         _clientesService = clientesService;
         _colaboradoresService = colaboradoresService;
+        _anexoOsService = anexoOsService;
     }
 
     [HttpGet]
@@ -55,5 +59,33 @@ public class OrdemServicoController : Controller
         
         await _ordemServicoService.PostOrdemServico(vm);
         return RedirectToAction(nameof(GetOs));
+    }
+
+
+    public async Task<IActionResult> DetailOs(int id)
+    {
+        var os = await _ordemServicoService.GetOsByIdAsync(id);
+        return PartialView("_ModalDetalheOsPartial", os);
+        //return View(os);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> FinalizarOs(int id, List<IFormFile> anexos)
+    {
+        await _ordemServicoService.FinalizarOs(id, anexos);
+        return RedirectToAction("GetOs");
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> BaixarAnexo(int id)
+    {
+        var anexo = await _anexoOsService.BuscarPorId(id);
+
+        return File(
+            anexo.Conteudo,
+            MediaTypeNames.Application.Octet,
+            anexo.NomeOriginal);
     }
 }

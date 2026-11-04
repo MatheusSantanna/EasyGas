@@ -4,17 +4,18 @@ using EasyGas.Repositorio;
 using EasyGas.VM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace EasyGas.Service;
 
 public class OrdemServicoService : IOrdemServicoService
 {
-    private readonly IRepository<OrdemServico> _ordemServicoRepository;
+    private readonly IRepository<OrdemServico> _ordemServicoRepository; 
 
     public OrdemServicoService(
         IRepository<OrdemServico> ordemServicoRepository)
     {
-        _ordemServicoRepository = ordemServicoRepository;
+        _ordemServicoRepository = ordemServicoRepository; 
     }
     
     public async Task<OrdemServico> PostOrdemServico(OrdemServicoVM vm)
@@ -51,6 +52,7 @@ public class OrdemServicoService : IOrdemServicoService
                 x => x.DataAbertura)
             .Select(x => new OrdemServicoVM
             {
+                Id = x.Id,
                 NumeroOS = x.NumeroOs,
                 ClienteId = x.ClientesId,
                 ColaboradorId = x.ColaboradoresId,
@@ -59,7 +61,8 @@ public class OrdemServicoService : IOrdemServicoService
                 ValorOs = x.ValorTotal,
                 DataInicio = x.DataAbertura,
                 DataFim = x.DataFechamento,
-                OsFinalizada = x.DataFechamento != null
+                OsFinalizada = x.OsFinalizada,
+                Anexos = x.Anexos
             }).ToListAsync();
         
         return query;
@@ -67,13 +70,47 @@ public class OrdemServicoService : IOrdemServicoService
     
     public Task<List<OrdemServicoVM>> GetOrdensAbertas() => GetAllOrdensServico(finalizada: false);
     public Task<List<OrdemServicoVM>> GetOrdensFechadas() => GetAllOrdensServico(finalizada: true);
-    
-    
-    public async Task<OrdemServico?> GetOsById(int id)
+   
+    public async Task<OrdemServico?> GetOsByIdAsync(int id)
     {
-        return await _ordemServicoRepository.GetByIdAsync(id);
+        return await _ordemServicoRepository
+            .GetAllAsync()
+            .Include(x => x.Clientes)
+            .Include(x => x.Colaboradores)
+            .Include(x => x.Anexos)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
-    
-    
-    
+
+    public async Task FinalizarOs(int id, List<IFormFile> anexos)
+    {
+        var ordemServico = await _ordemServicoRepository.GetByIdAsync(id);
+
+        var listaAnexos = new List<AnexoOs>();
+        foreach (var anexo in anexos)
+        {
+            if (anexo.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await anexo.CopyToAsync(memoryStream);
+                    var anexoOs = new AnexoOs
+                    {
+                        NomeOriginal = anexo.FileName, 
+                        Conteudo = memoryStream.ToArray(),
+                        OrdemServicoId = id
+                    };
+                    listaAnexos.Add(anexoOs);
+                }
+            }
+
+        }
+        ordemServico.Anexos = listaAnexos;
+        ordemServico.OsFinalizada = true;
+        ordemServico.DataFechamento = DateTime.UtcNow;
+
+        _ordemServicoRepository.Update(ordemServico);
+            
+
+    }
+
 }
